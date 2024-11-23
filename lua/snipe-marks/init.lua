@@ -13,7 +13,6 @@ local get_current_marks = function()
 
 	local items = {}
 	for _, v in ipairs(marks) do
-		print("mark: ", v.mark)
 		local mark = string.sub(v.mark, 2, 3)
 		local _, lnum, col, _ = unpack(v.pos)
 		local name = vim.api.nvim_buf_get_lines(bufnr, lnum - 1, lnum, false)[1]
