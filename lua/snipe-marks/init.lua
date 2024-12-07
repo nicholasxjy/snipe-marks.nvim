@@ -110,7 +110,7 @@ local default_config = {
 }
 
 M.setup = function(opts)
-	local config = vim.tbl_deep_extend("keep", default_config, opts or {})
+	local config = vim.tbl_deep_extend("force", default_config, opts or {})
 
 	vim.keymap.set("n", config.mappings.open, function()
 		open_marks_menu(config)

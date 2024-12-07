@@ -12,7 +12,8 @@ Yet another marks navigate nvim plugin depends on [leath-dub/snipe.nvim](https:/
   opts = {
     position = "cursor",
     mappings = {
-      open = "<leader>m",
+      open = "<leader>ml", -- local marks
+      openAll = "<leader>mg", -- all marks
       cancel = "<esc>",
       select = "<cr>"
     }
@@ -23,3 +24,9 @@ Yet another marks navigate nvim plugin depends on [leath-dub/snipe.nvim](https:/
 ## Demo
 
 ![demo.gif](./assets/demo.gif)
+
+# why not telescope?
+
+Local marks is a good and quick way for me to navigate between code blocks when editing the current buffer.
+
+The telescope UI is a bit distracted for me, snipe menu is so clean and simple.
