@@ -91,8 +91,13 @@ local open_marks_menu = function(type)
 	menu:open(marks, function(m, i)
 		m:close()
 		local item = marks[i]
-		local win = vim.api.nvim_get_current_win()
-		vim.api.nvim_win_set_cursor(win, { item.lnum, item.col - 1 })
+		if item.file and item.file ~= "" then
+			vim.cmd("edit " .. item.file)
+		else
+			vim.api.nvim_set_current_buf(item.buf)
+		end
+		local new_win = vim.api.nvim_get_current_win()
+		vim.api.nvim_win_set_cursor(new_win, { item.lnum, item.col - 1 })
 	end, function(mark_item)
 		return mark_item.line
 	end)
