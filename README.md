@@ -9,14 +9,9 @@ Yet another marks navigate nvim plugin depends on [leath-dub/snipe.nvim](https:/
 {
   "nicholasxjy/snipe-marks.nvim",
   dependencies = { "leath-dub/snipe.nvim" },
-  opts = {
-    position = "cursor",
-    mappings = {
-      open = "<leader>ml", -- local marks
-      openAll = "<leader>mg", -- all marks
-      cancel = "<esc>",
-      select = "<cr>"
-    }
+  keys = {
+    {"<leader>ml", function() require("snipe-marks").open_marks_menu() end, desc = "Find local marks"},
+    {"<leader>ml", function() require("snipe-marks").open_marks_menu("all") end, desc = "Find all marks"},
   }
 }
 ```
