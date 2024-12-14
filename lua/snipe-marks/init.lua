@@ -89,10 +89,10 @@ local open_marks_menu = function(type)
 	end)
 
 	menu:open(marks, function(m, i)
+		m:close()
 		local item = marks[i]
 		local win = vim.api.nvim_get_current_win()
 		vim.api.nvim_win_set_cursor(win, { item.lnum, item.col - 1 })
-		m:close()
 	end, function(mark_item)
 		return mark_item.line
 	end)
