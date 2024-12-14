@@ -62,20 +62,19 @@ local get_marks = function(type)
 	return marks_table
 end
 
-local open_marks_menu = function(opts, type)
+local open_marks_menu = function(type)
 	local marks = get_marks(type)
-
 	local menu = Menu:new({
-		position = opts.position,
+		position = "cursor",
 		open_win_override = { title = type == "all" and "All Marks" or "Local Marks" },
 	})
 
 	menu:add_new_buffer_callback(function(m)
-		vim.keymap.set("n", opts.mappings.cancel, function()
+		vim.keymap.set("n", "<esc>", function()
 			m:close()
 		end, { nowait = true, buffer = m.buf })
 
-		vim.keymap.set("n", opts.mappings.select, function()
+		vim.keymap.set("n", "<cr>", function()
 			local hovered = m:hovered()
 			local item = m.items[hovered]
 			m:close()
@@ -90,35 +89,20 @@ local open_marks_menu = function(opts, type)
 	end)
 
 	menu:open(marks, function(m, i)
-		local item = marks[i]
-		local win = vim.api.nvim_get_current_win()
-		vim.api.nvim_win_set_cursor(win, { item.lnum, item.col - 1 })
 		m:close()
+		local item = marks[i]
+		if item.file and item.file ~= "" then
+			vim.cmd("edit " .. item.file)
+		else
+			vim.api.nvim_set_current_buf(item.buf)
+		end
+		local new_win = vim.api.nvim_get_current_win()
+		vim.api.nvim_win_set_cursor(new_win, { item.lnum, item.col - 1 })
 	end, function(mark_item)
 		return mark_item.line
 	end)
 end
 
-local default_config = {
-	position = "cursor",
-	mappings = {
-		cancel = "<esc>",
-		open = "<leader>ml",
-		openAll = "<leader>mg",
-		select = "<cr>",
-	},
-}
-
-M.setup = function(opts)
-	local config = vim.tbl_deep_extend("force", default_config, opts or {})
-
-	vim.keymap.set("n", config.mappings.open, function()
-		open_marks_menu(config)
-	end, { desc = "Find local marks" })
-
-	vim.keymap.set("n", config.mappings.openAll, function()
-		open_marks_menu(config, "all")
-	end, { desc = "Find all marks" })
-end
+M.open_marks_menu = open_marks_menu
 
 return M
